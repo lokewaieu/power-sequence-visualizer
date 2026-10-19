@@ -26,6 +26,9 @@ Historically, hardware engineers were forced to choose between:
 
 ###  1. Rapid Power Sequence Mockup
 - **Direct-Manipulation Edge Sliders**: Grab the circular dot marker (`●`) on any transition edge and drag it left or right. Waveforms track your cursor with zero lag.
+<p align="center">
+  <img src="assets/EdgeSlider.gif" alt="Demo Animation" width="100%">
+</p>
 - **Real-Time Live Row Reordering**: Click and drag the `⋮⋮` grip on any row. The row elevates into a floating card, and the table dynamically reorders in real-time as you drag across rows.
 - **Click-to-Position**: Click anywhere along a waveform track to immediately jump the transition edge to that point.
 - **Double-Click Mode Toggle**: Double-click any waveform track to quickly cycle through waveform types without opening menus.
