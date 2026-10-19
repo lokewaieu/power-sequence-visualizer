@@ -1043,7 +1043,7 @@
       tdMode.appendChild(selectMode);
       tr.appendChild(tdMode);
 
-      // 8. Power Sequence Waveform Column
+      // 8. Power Timing Diagram Column
       const tdSeq = document.createElement('td');
       tdSeq.className = 'col-sequence';
       const wfContainer = document.createElement('div');
