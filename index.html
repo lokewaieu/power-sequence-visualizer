@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power Sequence Visualizer & Drafter</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-dark mode-advanced">
+  <div class="app-container">
+    <!-- Top Navigation / Toolbar -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="logo-icon" title="Power Sequence Drafter">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Power Sequence Visualizer</h1>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Mode Switcher: Basic vs Advanced -->
+        <div class="segmented-control" title="Choose display mode">
+          <button type="button" id="mode-btn-basic" class="segment-btn" data-mode="basic">Basic</button>
+          <button type="button" id="mode-btn-advanced" class="segment-btn active" data-mode="advanced">Advanced</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Time Config (Visible only in Advanced Mode) -->
+        <div class="time-scale-group advanced-only" title="Adjust timing scale units and full duration">
+          <label for="time-unit-select">Unit:</label>
+          <select id="time-unit-select" class="select-input">
+            <option value="ms">ms</option>
+            <option value="µs">µs</option>
+            <option value="ns">ns</option>
+            <option value="s">s</option>
+            <option value="%">%</option>
+          </select>
+          <label for="max-time-input">Total:</label>
+          <input type="number" id="max-time-input" class="number-input" value="100" min="1" max="100000" step="5">
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Add Row Button -->
+        <button id="add-row-btn" class="btn btn-primary" title="Add a new power sequence signal row">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Add Signal</span>
+        </button>
+
+        <!-- Presets / Quick actions -->
+        <button id="load-sample-btn" class="btn btn-secondary" title="Load realistic SoC power-up sequence">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Sample</span>
+        </button>
+
+        <button id="clear-all-btn" class="btn btn-secondary btn-icon" title="Clear all rows">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </button>
+
+        <!-- Waveform Color Menu -->
+        <div class="dropdown">
+          <button id="color-dropdown-btn" class="btn btn-secondary" title="Waveform colors">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+            </svg>
+            <span>Color ▾</span>
+          </button>
+          <div class="dropdown-menu color-dropdown-menu" id="color-menu">
+            <div class="dropdown-header-label">Apply color to all:</div>
+            <div class="palette-swatches-all" id="palette-swatches-all"></div>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" id="color-multi-btn">🌈 Multi-Color (Cycle 7 Colors)</button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Export Menu -->
+        <div class="dropdown">
+          <button id="export-dropdown-btn" class="btn btn-secondary" title="Export diagram or data">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+              <polyline points="16 6 12 2 8 6"></polyline>
+              <line x1="12" y1="2" x2="12" y2="15"></line>
+            </svg>
+            <span>Export ▾</span>
+          </button>
+          <div class="dropdown-menu" id="export-menu">
+            <button class="dropdown-item" id="export-pdf-btn">📄 Export to PDF</button>
+            <button class="dropdown-item" id="export-svg-btn">🖼️ Export Vector SVG</button>
+            <button class="dropdown-item" id="export-png-btn">📸 Export Image (PNG)</button>
+            <button class="dropdown-item" id="export-json-btn">💾 Save Project (JSON)</button>
+            <button class="dropdown-item" id="export-csv-btn">📊 Export Table (CSV)</button>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" id="print-page-btn">🖨️ Print Page (Ctrl+P)</button>
+          </div>
+        </div>
+
+        <!-- Import Button -->
+        <label for="import-file-input" class="btn btn-secondary" title="Open saved JSON project" style="margin-bottom: 0;">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span>Import</span>
+          <input type="file" id="import-file-input" accept=".json" style="display:none">
+        </label>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle-btn" class="btn btn-secondary btn-icon" title="Toggle Dark/Light Mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <div class="table-card">
+        <!-- Table Status Sub-bar -->
+        <div class="table-subbar">
+          <div class="subbar-info">
+            <span id="row-count-badge" class="badge">0 Signals</span>
+            <div class="subbar-help-wrap">
+              <button type="button" class="help-circle-btn" aria-label="Tips and shortcuts" title="Tips & shortcuts">?</button>
+              <div class="subbar-help-tooltip">
+                <div class="help-tooltip-header">Tips & Shortcuts</div>
+                <ul class="help-tooltip-list">
+                  <li><span class="help-icon">⋮⋮</span> Drag handles to reorder rows</li>
+                  <li><span class="help-icon">●</span> Drag markers to adjust timing</li>
+                  <li><span class="help-icon">↔</span> Drag column borders to resize</li>
+                  <li><span class="help-icon">⇧</span> Hold <kbd>Shift</kbd> to bypass snapping</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="subbar-controls">
+            <!-- Voltage Column Toggle -->
+            <button id="toggle-voltage-btn" class="btn btn-secondary btn-sm" title="Show or hide the Voltage column">
+              <svg id="voltage-icon-eye" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <span id="voltage-toggle-label">Hide Voltage</span>
+            </button>
+
+            <!-- Waveform Type Column Toggle -->
+            <button id="toggle-type-btn" class="btn btn-secondary btn-sm" title="Show or hide the Waveform Type column">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
+              </svg>
+              <span id="type-toggle-label">Hide Type</span>
+            </button>
+
+            <label class="checkbox-label advanced-only" title="Snap edge transitions to 5% grid ticks when dragging (hold Shift for free drag)">
+              <input type="checkbox" id="snap-grid-checkbox" checked>
+              <span>Snap grid (5%)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Master Scroll Container -->
+        <div class="table-scroll-wrapper" id="table-scroll-wrapper">
+          <!-- Synchronized Crosshair Guide -->
+          <div id="crosshair-guide" class="crosshair-guide hidden">
+            <div class="crosshair-badge advanced-only" id="crosshair-badge">0.0 ms</div>
+          </div>
+
+          <table class="sequence-table" id="sequence-table">
+            <thead>
+              <tr class="header-row">
+                <th class="col-drag" title="Drag handle to reorder rows"></th>
+                <th class="col-idx">#</th>
+                <th class="col-source resizable-col" data-col="source">
+                  <div class="th-content">Source</div>
+                  <div class="col-resizer" title="Drag to resize column"></div>
+                </th>
+                <th class="col-dest resizable-col" data-col="dest">
+                  <div class="th-content">Destination</div>
+                  <div class="col-resizer" title="Drag to resize column"></div>
+                </th>
+                <th class="col-signal resizable-col" data-col="signal">
+                  <div class="th-content">Signal Name</div>
+                  <div class="col-resizer" title="Drag to resize column"></div>
+                </th>
+                <th class="col-voltage voltage-col-cell resizable-col" data-col="voltage">
+                  <div class="th-content">Voltage</div>
+                  <div class="col-resizer" title="Drag to resize column"></div>
+                </th>
+                <th class="col-mode type-col-cell">
+                  <div class="th-content">Waveform Type</div>
+                </th>
+                <th class="col-sequence">
+                  <div class="sequence-header-container">
+                    <div class="header-sequence-title-row">
+                      <span class="header-label">Power Sequence Waveform</span>
+                      <span class="logic-label advanced-only">Logic: 0 (LOW) → 1 (HIGH)</span>
+                    </div>
+                    <!-- Master Timeline Ruler -->
+                    <div class="timeline-ruler" id="timeline-ruler">
+                      <!-- Dynamically generated tick labels / notches -->
+                    </div>
+                  </div>
+                </th>
+                <th class="col-actions"></th>
+              </tr>
+            </thead>
+            <tbody id="sequence-tbody">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty state placeholder (visible if 0 rows) -->
+        <div id="empty-state" class="empty-state hidden">
+          <div class="empty-icon">⚡</div>
+          <h3>No Power Sequence Signals Added</h3>
+          <p>Start drafting your power sequence by adding a signal or loading a sample SoC power tree.</p>
+          <div class="empty-actions">
+            <button class="btn btn-primary" onclick="app.addRow()">+ Add Signal</button>
+            <button class="btn btn-secondary" onclick="app.loadSampleData()">Load Sample Sequence</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Edge Dragging Tooltip Indicator (Advanced mode) -->
+    <div id="drag-tooltip" class="drag-tooltip hidden">50.0 ms</div>
+
+    <!-- Floating Row Drag Preview Container (Dynamic during row reordering) -->
+    <div id="drag-row-ghost" class="drag-row-ghost hidden"></div>
+
+    <!-- Floating Row Color Picker Popover -->
+    <div id="row-color-popover" class="row-color-popover hidden">
+      <div class="popover-header-label">Waveform Color</div>
+      <div class="popover-swatches" id="popover-swatches"></div>
+    </div>
+
+    <!-- Footer info -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <span id="footer-mode-label">⚡ Advanced Mode: Full Precision Timing & Logic Levels</span>
+      </div>
+      <div class="footer-right">
+        <span id="save-status-text">Draft saved to browser storage</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
