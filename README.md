@@ -1,4 +1,4 @@
-# ⚡ Power Sequence Visualizer & Drafter
+# Power Sequence Visualizer & Drafter
 
 > **A fast, intuitive, zero-dependency web tool for hardware engineers, power architects, and embedded system designers to draft, visualize, and document electronic power-up/down sequences.**
 
@@ -27,19 +27,27 @@ Historically, hardware engineers were forced to choose between:
 ###  1. Rapid Power Sequence Mockup
 - **Direct-Manipulation Edge Sliders**: Grab the circular dot marker (`●`) on any transition edge and drag it left or right. Waveforms track your cursor with zero lag.
 <p align="center">
-  <img src="assets/EdgeSlider.gif" alt="Demo Animation" width="100%">
+  <img src="assets/EdgeSlider.gif" alt="Demo Animation 1" width="100%">
 </p>
 
 - **Real-Time Live Row Reordering**: Click and drag the `⋮⋮` grip on any row. The row elevates into a floating card, and the table dynamically reorders in real-time as you drag across rows.
+<p align="center">
+  <img src="assets/Reorder.gif" alt="Demo Animation 2" width="100%">
+</p>
+
 - **Click-to-Position**: Click anywhere along a waveform track to immediately jump the transition edge to that point.
-- **Double-Click Mode Toggle**: Double-click any waveform track to quickly cycle through waveform types without opening menus.
-- **Preset Sample Sequence**: Load a realistic SoC power tree (Core, Memory, I/O, Oscillator, Reset) with one click to start drafting immediately.
+<p align="center">
+  <img src="assets/Click.gif" alt="Demo Animation 3" width="100%">
+</p>
 
 ###  2. Smart Magnetic Snapping
 - **Cross-Rail Alignment**: When dragging a transition edge, it magnetically snaps to edges on rails above or below it with visual feedback (`🧲 Snapped to VDD_CORE`).
+<p align="center">
+  <img src="assets/Snap.gif" alt="Demo Animation 4" width="100%">
+</p>
+
 - **Timeline Grid Snapping**: Built-in 5% grid tick snapping for clean increments.
 - **Shift Bypass**: Hold <kbd>Shift</kbd> while dragging for free-form, smooth sub-pixel placement.
-- **Synchronized Vertical Crosshair**: A full-height vertical guide line follows your cursor across all signals for instant visual inspection of timing relationships.
 
 ###  3. Rich Waveform Library
 - **Rising Sequence (`0 → 1`)**: Standard power rail turn-on with realistic slew transition.
@@ -57,6 +65,9 @@ Historically, hardware engineers were forced to choose between:
 - **Oscilloscope Dark & Clean Light Themes**: One-click toggle between CAD dark theme and crisp documentation light mode.
 - **Compact Workspace**: Voltage and Waveform Type columns can be hidden to maximize screen real estate, fitting more waveforms on screen.
 - **Resizable Columns**: Drag column header borders (`Source`, `Destination`, `Signal Name`, `Voltage`) to customize cell widths.
+<p align="center">
+  <img src="assets/LightMode.gif" alt="Demo Animation 5" width="100%">
+</p>
 
 ###  5. Publication-Ready Exports (Zero Clipping)
 - **Standalone Complete PDF Export**: Generates and downloads a clean, unclipped `power_sequence_diagram.pdf` that dynamically fits the full table and timeline without browser print clipping.
