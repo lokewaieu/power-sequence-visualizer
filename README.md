@@ -69,13 +69,13 @@ Historically, hardware engineers were forced to choose between:
   <img src="assets/LightMode.gif" alt="Demo Animation 5" width="100%">
 </p>
 
-###  5. Publication-Ready Exports (Zero Clipping)
+###  5. Publication-Ready Exports
 - **Standalone Complete PDF Export**: Generates and downloads a clean, unclipped `power_sequence_diagram.pdf` that dynamically fits the full table and timeline without browser print clipping.
 - **Vector SVG Export**: Clean, scalable SVG for embedding in datasheets, Altium/Cadence schematic packs, or Confluence.
-- **High-DPI PNG Export**: 2× retina raster image export.
+- **High-DPI PNG Export**: Self explanatory.
 - **Export Marker Removal**: All exported files automatically omit editor drag handles, yielding publication-ready timing diagrams.
 - **CSV Data Export**: Tabular timing delays and rail metadata for Excel, Google Sheets, or Python automated test bench scripts.
-- **JSON Project Save/Load**: Save complete project state to a `.json` file and restore it anytime.
+- **JSON Project Save/Load**: Save complete project state to a `.json` file, share it among team members or colleagues and restore it anytime.
 
 ###  6. Zero Dependencies & 100% Private
 - **Zero build steps**, zero npm packages, zero external CDNs, and zero telemetry.
@@ -122,14 +122,12 @@ Or just double-click `index.html` in your file explorer. No server or internet c
 
 ---
 
-## 🛠️ Project Structure
+## Closing Words
 
-```text
-├── index.html       # Clean semantic layout, toolbars, and table structure
-├── style.css        # Responsive dark/light oscilloscope themes & animations
-├── app.js           # Waveform engine, drag/snap physics, and multi-format exporters
-└── README.md        # Documentation
-```
+This is something I made to aid in my daily job and to be honest, I am quite proud of it :)
+If you have read that far, do consider tipping if you find it useful. I will be very grateful :D
+
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-red?style=flat&logo=ko-fi)](https://ko-fi.com/lokewaieu)
 
 ---
 
